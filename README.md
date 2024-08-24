@@ -1,10 +1,12 @@
 # Focus CLI
-
+[![Github All Releases](https://img.shields.io/github/downloads/datavorous/focus_cli/total.svg)]()   
 *ALL Website blocker extensions are trash, use this instead*.  
 Use **only one website at a time**. No tab switching.  
 Focus CLI is a command-line tool which helps you block distractions by locking your screen, preventing specific keys, and setting up timed focus and break intervals. 
 
-## Features
+## Preview and Features
+
+<img src="https://raw.githubusercontent.com/datavorous/focus_cli/main/demo.PNG" alt="demo">  
 
 - Pomodoro sessions with customizable focus and break times
 - Focus protection that limits distractions during sessions, and prevents fidgeting with mouse
