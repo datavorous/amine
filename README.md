@@ -1,6 +1,7 @@
 # Focus CLI
 
-Focus CLI is a command-line tool designed to help you focus during work or study sessions by leveraging the Pomodoro technique. It helps you block distractions by locking your screen, preventing specific keys, and setting up timed focus and break intervals.
+*ALL Website blocker extensions are trash, use this instead*.  
+Focus CLI is a command-line tool designed to help you focus during work or study sessions by leveraging the Pomodoro technique. It helps you block distractions by locking your screen, preventing specific keys, and setting up timed focus and break intervals. 
 
 ## Features
 
@@ -16,7 +17,7 @@ To install Focus CLI, follow these steps:
 1. **Clone the repository:**
 
     ```bash
-    git clone https://github.com/yourusername/focus_cli.git
+    git clone https://github.com/datavorous/focus_cli.git
     cd focus_cli
     ```
 
@@ -61,7 +62,7 @@ To build a standalone executable, follow these steps:
 1. **Install PyInstaller:**
 
     ```bash
-    poetry add --dev pyinstaller
+    poetry add pyinstaller
     ```
 
 2. **Build the executable:**
@@ -69,12 +70,13 @@ To build a standalone executable, follow these steps:
     Run the following command to create a standalone executable:
 
     ```bash
-    pyinstaller --onefile focus_cli/cli.py
+    python build.py
     ```
 
 3. **Find the executable:**
 
     The executable will be created in the `dist/` directory.
+    Now put it in your env vars or whatever, just use `focus` anywhere on the cmd line.
 
 ## Contributing
 
