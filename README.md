@@ -1,14 +1,15 @@
 # Focus CLI
 
 *ALL Website blocker extensions are trash, use this instead*.  
-Focus CLI is a command-line tool designed to help you focus during work or study sessions by leveraging the Pomodoro technique. It helps you block distractions by locking your screen, preventing specific keys, and setting up timed focus and break intervals. 
+Use **only one website at a time**. No tab switching.  
+Focus CLI is a command-line tool which helps you block distractions by locking your screen, preventing specific keys, and setting up timed focus and break intervals. 
 
 ## Features
 
 - Pomodoro sessions with customizable focus and break times
-- Focus protection that limits distractions during sessions
+- Focus protection that limits distractions during sessions, and prevents fidgeting with mouse
 - Session stats tracking
-- URL launcher for focus-related websites
+- URL launcher for focus-related website. ONLY ONE.
 
 ## Installation
 
@@ -37,13 +38,18 @@ To install Focus CLI, follow these steps:
 
 ## Usage
 
-To start using Focus CLI, simply run:
+> [!NOTE]
+> This was not intended for a retarded browser like Edge (which easily allows you to escape full screen mode with a right click, use Brave be happy.
+> Or make a PR which prevents right mouse click, I ain't doing it for no reason.
 
 ```bash
 focus
 ```
 
 You'll be prompted to configure your Pomodoro session by setting the number of sessions, focus duration, and break duration. Focus protection will kick in, limiting distractions and guiding you through your work intervals.
+
+> [!WARNING]
+> The prebuilt binaries allows escaping, to prevent that, make the required changes in the ```focus_protection.py``` file and build it. Check out ```config.py``` aswell.
 
 ### Example
 
