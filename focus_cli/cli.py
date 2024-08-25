@@ -20,38 +20,42 @@ console = Console()
 DATA_DIR = Path.home() / ".pomodoro_cli"
 DATA_FILE = DATA_DIR / "pomodoro_stats.json"
 
+# Ensure the data directory exists
 def ensure_data_dir():
     DATA_DIR.mkdir(parents=True, exist_ok=True)
 
+# Show guidelines and recent stats
 def show_guidelines(recent_stats: List[Dict]):
     guideline_text = """
-    [bold white]Start[/bold white]: Set sessions, focus, break times.
-    [bold white]Exit[/bold white]: Press [bold white]{exit_combo}[/bold white].
-    [bold white]Stats[/bold white]: Recent data below.
+    [bold red]🔥 Start:[/bold red] Set your sessions, focus time, and break times.
+    [bold red]🛑 Exit:[/bold red] Press [bold white]{exit_combo}[/bold white] to quit anytime.
+    [bold red]📊 Stats:[/bold red] Review your recent sessions below.
     """.format(exit_combo=CONFIG['EXIT_COMBO'])
 
-    console.print(Panel(guideline_text, title="[bold white]Pomodoro Guidelines[/bold white]", border_style="white"))
+    console.print(Panel(guideline_text, title="[bold red]🚀 Pomodoro Guidelines[/bold red]", border_style="red"))
 
     if recent_stats:
-        table = Table(title="Recent Sessions", style="white")
-        table.add_column("Date", style="white")
-        table.add_column("Count", style="white")
-        table.add_column("Duration", style="white")
+        table = Table(title="📅 Recent Sessions", title_style="bold red", style="bright_red")
+        table.add_column("📆 Date", style="bold white")
+        table.add_column("⏱️ Count", style="bold white")
+        table.add_column("⌛ Duration", style="bold white")
 
         for session in recent_stats:
             table.add_row(session["date"], str(session["pomodoros"]), f"{session['focus_duration']}m")
 
         console.print(Align.center(table))
     else:
-        console.print("[white]No recent data.[/white]")
+        console.print("[red]No recent data available.[/red]")
 
+# Load recent stats from the JSON file
 def load_recent_stats() -> List[Dict]:
     try:
         return json.loads(DATA_FILE.read_text())[-5:] if DATA_FILE.exists() else []
     except Exception as e:
-        console.print(f"[white]Error loading stats: {e}[/white]")
+        console.print(f"[red]Error loading stats: {e}[/red]")
         return []
 
+# Save focus session data to the JSON file
 def save_focus_session(pomodoros: int, focus_duration: int):
     try:
         data = load_recent_stats()
@@ -62,42 +66,43 @@ def save_focus_session(pomodoros: int, focus_duration: int):
         })
         DATA_FILE.write_text(json.dumps(data))
     except Exception as e:
-        console.print(f"[white]Error saving data: {e}[/white]")
+        console.print(f"[red]Error saving data: {e}[/red]")
 
+# Main pomodoro flow
 def pomodoro_flow():
     ensure_data_dir()
     show_guidelines(load_recent_stats())
 
-    pomodoros = int(Prompt.ask("[white]Sessions[/white]", default="4"))
-    focus_duration = int(Prompt.ask("[white]Focus (min)[/white]", default="25"))
-    break_duration = int(Prompt.ask("[white]Break (min)[/white]", default="5"))
-    website = Prompt.ask("[white]Focus URL[/white]", default="https://example.com")
+    pomodoros = int(Prompt.ask("[red]💼 Number of Sessions[/red]", default="4"))
+    focus_duration = int(Prompt.ask("[red]⏳ Focus Duration (min)[/red]", default="25"))
+    break_duration = int(Prompt.ask("[red]☕ Break Duration (min)[/red]", default="5"))
+    website = Prompt.ask("[red]🌐 Focus URL[/red]", default="https://example.com")
 
     console.print(Panel(
-        f"[white]{pomodoros} x {focus_duration}m focus / {break_duration}m break[/white]\n"
-        f"[white]URL:[/white] {website}\n"
-        f"[white]Stop:[/white] {CONFIG['EXIT_COMBO']}",
-        title="[bold white]Pomodoro Config[/bold white]",
-        border_style="white"
+        f"[red]{pomodoros} x {focus_duration}m focus / {break_duration}m break[/red]\n"
+        f"[red]🌐 URL:[/red] {website}\n"
+        f"[red]🛑 Stop:[/red] {CONFIG['EXIT_COMBO']}",
+        title="[bold red]🎯 Pomodoro Config[/bold red]",
+        border_style="red"
     ))
 
-    if Prompt.ask("[white]Start?[/white]", choices=["y", "n"], default="y") != "y":
-        console.print("[white]Cancelled.[/white]")
+    if Prompt.ask("[red]🚀 Ready to start?[/red]", choices=["y", "n"], default="y") != "y":
+        console.print("[red]Cancelled.[/red]")
         return
 
     webbrowser.open(website)
 
     for i in range(pomodoros):
-        console.print(f"[white]Pomodoro {i + 1}/{pomodoros} starting...[/white]")
+        console.print(f"[red]🍅 Pomodoro {i + 1}/{pomodoros} starting...[/red]")
         countdown_timer(10)
 
         FocusProtection().start_protection(focus_duration)
 
         if i < pomodoros - 1:
-            console.print(f"[white]Break: {break_duration}m[/white]")
+            console.print(f"[red]☕ Break: {break_duration}m[/red]")
             countdown_timer(break_duration * 60)
 
-    console.print("[white]Pomodoro completed![/white]")
+    console.print("[red]🎉 Pomodoro session completed![/red]")
     save_focus_session(pomodoros, focus_duration)
 
 @click.command()
