@@ -16,9 +16,9 @@
             theme: {
                 extend: {
                     colors: {
-                        'amine-bg': '#092635',
-                        'amine-text': '#9EC8B9',
-                        'amine-input': '#1B4242',
+                        'amine-bg': '#8f2318',
+                        'amine-text': '#fcc981',
+                        'amine-input': '#a13d25',
                     },
                     fontFamily: {
                         'custom': ['Poppins', 'monospace'], 
@@ -63,7 +63,7 @@
     </div>
     <div class="flex justify-between items-center">
         <label for="website" class="text-2xl w-28 font-custom">url</label>
-        <input type="url" id="website" name="website" required value="https://web.getmarks.app"
+        <input type="url" id="website" name="website" required value="https://leetcode.com/"
             class="w-56 bg-amine-input border-none p-2 text-lg text-amine-text rounded-lg"
             style="outline: none;">
     </div>
@@ -78,7 +78,7 @@
     <div class="absolute bottom-5 left-5 text-sm font-custom">
         Press <strong>{{ exit_combo }}</strong> to quit anytime.
     </div>
-    <div class="absolute bottom-5 right-5 text-sm font-custom">help?</div>
+    <a href="https://datavorous.github.io/amine"><div class="absolute bottom-5 right-5 text-sm font-custom">help?</div></a>
 
     <script>
         document.getElementById('pomodoro-form').addEventListener('submit', function(e) {

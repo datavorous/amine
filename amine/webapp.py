@@ -8,6 +8,7 @@ import keyboard
 import time
 import sys
 import pygetwindow as gw
+import winsound
 #from win11toast import toast
 
 app = Flask(__name__)
@@ -15,7 +16,7 @@ app = Flask(__name__)
 CONFIG = {
     "SAFE_X": 500,
     "SAFE_Y": 500,
-    "TOP_SCREEN_THRESHOLD": 30,
+    "TOP_SCREEN_THRESHOLD": 40,
     "BLOCKED_KEYS": [
         'left windows', 'right windows', 'alt', 'tab', 'ctrl', 'esc', 
         'f11', 'cmd', 'command', 'win'
@@ -30,14 +31,13 @@ class FocusProtection:
         pyautogui.FAILSAFE = False
         self.protection_active = False
         self.mouse_thread = None
-        self.quit_early = False  # Flag to track early quit
+        #self.quit_early = False  # Flag to track early quit
 
     def enforce_mouse_boundaries(self):
         screen_width, screen_height = pyautogui.size()
         while self.protection_active:
             x, y = pyautogui.position()
-            if (y < self.config["TOP_SCREEN_THRESHOLD"] or 
-                x == 0 or x == screen_width - 1 or y == screen_height - 1):
+            if (y < self.config["TOP_SCREEN_THRESHOLD"] or y > screen_height - self.config["TOP_SCREEN_THRESHOLD"]):
                 pyautogui.moveTo(self.config["SAFE_X"], self.config["SAFE_Y"])
             time.sleep(self.config["MOUSE_ENFORCE_DELAY"])
 
@@ -92,24 +92,36 @@ def maximize_flask_window():
     else:
         print("Flask window not found.")
 
-def ensure_fullscreen():
 
+"""
+def get_browser_window():
+    possible_browsers = ['Google Chrome', 'Mozilla Firefox', 'Microsoft Edge', 'Brave', 'Opera', 'Safari']  # Add more as needed
+    for browser in possible_browsers:
+        windows = gw.getWindowsWithTitle(browser)
+        if windows:
+            return windows[0]  # Return the first match found
+    return None
+
+def ensure_fullscreen():
+    pass
     print("Ensuring fullscreen mode...")
-    windows = gw.getWindowsWithTitle("amine")
-    if windows:
-        flask_window = windows[0]
-        if not flask_window.isMaximized:  # Check if window is maximized
-            print("Window is not fullscreen. Entering fullscreen...")
-            pyautogui.press('f11')  # Force fullscreen
-            time.sleep(2)  # Wait for fullscreen mode to be applied
-            if flask_window.isMaximized:
+    browser_window = get_browser_window()
+    if browser_window:
+        if not browser_window.isMaximized:  # Maximize window first
+            print(f"Maximizing {browser_window.title} window...")
+            browser_window.maximize()
+            time.sleep(1)
+            pyautogui.press('f11')  # Toggle fullscreen mode
+            time.sleep(2)
+            if browser_window.isFullscreen:
                 print("Fullscreen mode applied successfully.")
             else:
                 print("Failed to apply fullscreen mode.")
         else:
-            print("Window is already fullscreen.")
+            print(f"{browser_window.title} window is already fullscreen.")
     else:
-        print("Flask window not found.")
+        print("No browser window found.")"""
+
 
 @app.route('/')
 def index():
@@ -128,26 +140,35 @@ def start_pomodoro():
 
 def pomodoro_flow(pomodoros, focus_duration, break_duration, website):
     
-    minimize_flask_window()
-    #toast("Starting Pomodoro session...")
+
     webbrowser.open(website)
-    time.sleep(3)  # Increased delay to ensure the browser loads
-    ensure_fullscreen()
+    minimize_flask_window()
+    time.sleep(5) # Adjust timing as necessary
+    pyautogui.click(x=100, y=200)  
+    # this is some kind of jugad i presume
+    # ensure_fullscreen()  # This implementation failed. It Ensured the window is fullscreen
+    
+    pyautogui.press('f11')  
 
     focus_protection = FocusProtection()
-
+    #winsound.Beep(500,500)
     for i in range(pomodoros):
+        winsound.Beep(500,500)
         print(f"Starting Pomodoro {i + 1}/{pomodoros}")
         focus_protection.start_protection(focus_duration)
 
         if i < pomodoros - 1:
+            winsound.Beep(500,500)
             print(f"Break: {break_duration} minutes")
             time.sleep(break_duration * 60)
 
     print("Pomodoro session completed. Exiting fullscreen...")
+    winsound.Beep(1000,500)
     pyautogui.press('f11')  # Exit fullscreen
     maximize_flask_window()
     print("Flask window restored.")
+
+
 
 if __name__ == '__main__':
     FlaskUI(app=app, server="flask",width=470, height=628,).run()
