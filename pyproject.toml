@@ -6,13 +6,16 @@ authors = ["datavorous <bhattacharjeesagnik910@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.12"
+python = "<3.14,>=3.8"
 flaskwebgui = "^1.1.3"
 flask = "^3.0.3"
 pyautogui = "^0.9.54"
 keyboard = "^0.13.5"
 pygetwindow = "^0.0.9"
 
+
+[tool.poetry.group.dev.dependencies]
+pyinstaller = "^6.10.0"
 
 [build-system]
 requires = ["poetry-core"]

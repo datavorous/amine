@@ -123,9 +123,15 @@ def ensure_fullscreen():
         print("No browser window found.")"""
 
 
+
 @app.route('/')
-def index():
+def help():
     return render_template('index.html', exit_combo=CONFIG['EXIT_COMBO'])
+
+@app.route('/help')
+def index():
+    return render_template('help.html')
+
 
 @app.route('/start_pomodoro', methods=['POST'])
 def start_pomodoro():
@@ -172,3 +178,6 @@ def pomodoro_flow(pomodoros, focus_duration, break_duration, website):
 
 if __name__ == '__main__':
     FlaskUI(app=app, server="flask",width=470, height=628,).run()
+
+    
+# pyinstaller -w -F --add-data "templates;templates" webapp.py
