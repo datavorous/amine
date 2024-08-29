@@ -8,7 +8,7 @@
 [![Github All Releases](https://img.shields.io/github/downloads/datavorous/amine/total.svg?style=flat)](https://github.com/datavorous/amine/releases)
 [![GitHub stars](https://img.shields.io/github/stars/datavorous/amine.svg?style=social&label=Stars&style=plastic)](https://github.com/datavorous/amine/stargazers)
 
-### [DOWNLOAD for Windows](https://datavorous.github.io/amine/) 
+### [DOWNLOAD for Windows](https://github.com/datavorous/amine/releases/download/v0.0.1/win64-amine.zip) 
 
 </div>
 
