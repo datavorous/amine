@@ -1,8 +1,14 @@
 <div align="center">
+  
+<img src="thumb1.png" width="80%">
 
 # amine
 
-<img src="thumb1.png" width="80%">
+[![GitHub Release](https://img.shields.io/github/release/datavorous/amine.svg?style=flat)](https://github.com/datavorous/amine/releases)
+[![Github All Releases](https://img.shields.io/github/downloads/datavorous/amine/total.svg?style=flat)](https://github.com/datavorous/amine/releases)
+[![GitHub stars](https://img.shields.io/github/stars/datavorous/amine.svg?style=social&label=Stars&style=plastic)](https://github.com/datavorous/amine/stargazers)
+
+### [DOWNLOAD for Windows](https://datavorous.github.io/amine/) 
 
 </div>
 
@@ -14,7 +20,7 @@
   - Prevents mouse movement to screen edges.
 - **Fullscreen Enforcement**: Automatically enters fullscreen mode for the chosen focus website.
 - **Safe Exit Mechanism**: Allows users to exit using a predefined key combination (Ctrl+Shift+Q).
-- **User-Friendly Interface**: Clean, responsive design built with HTML, Tailwind CSS, and custom fonts.
+- **User-Friendly Interface**: Clean, responsive design built with HTML, Tailwind CSS.
 
 ## Comparison
 
@@ -27,7 +33,7 @@
 | Customizable Sessions | ✅ | ✅ | ✅ | ✅ | ✅ |
 | Local Application (No Account Needed) | ✅ | ❌ | ❌ | ✅ | Varies |
 
-## Technical Stack
+## Stack
 
 - **Backend**: Python with Flask
 - **Frontend**: HTML, JavaScript, Tailwind CSS
@@ -35,7 +41,7 @@
 - **Dependency Management**: Poetry
 - **Additional Libraries**: pyautogui, keyboard, pygetwindow, winsound
 
-## Technical Insights
+## Insights
 
 1. **Multithreading**: The application uses Python's threading module to run the Pomodoro timer and mouse boundary enforcement concurrently with the main Flask application.
 
