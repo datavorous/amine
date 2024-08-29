@@ -1,47 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FWT2H26NGJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FWT2H26NGJ');
+</script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>focus_cli</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <title>amine</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script async src="https://tally.so/widgets/embed.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body {
-            font-family: 'Montserrat', sans-serif;
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'amine-bg': '#090a24',
+                        'amine-text': '#DCF2F1',
+                        'amine-input': '#365486',
+                    },
+                    fontFamily: {
+                        'custom': ['Poppins', 'sans-serif'],
+                    }
+                }
+            }
         }
-    </style>
+    </script>
 </head>
-<body class="bg-black text-white min-h-screen font-montserrat flex items-center justify-center">
-    <div class="container mx-auto px-4 py-8 max-w-4xl">
-        <header class="text-center mb-16">
-            <h1 class="text-5xl font-bold mb-4">focus_cli</h1>
-            <p class="text-2xl">Ditch Useless Browser Extensions.<br>
-                Focus on <i>ONLY ONE</i> thing, at a time.</p>
+<body class="bg-amine-bg text-amine-text font-custom flex items-center justify-center min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-2xl">
+        <header class="text-center mb-8">
+            <h1 class="text-7xl mb-6">amine</h1>
+            <p class="text-xl">Next Gen Distraction Remover<br>
+            It <em><b>forces</b></em> you to focus</p>
         </header>
         <main>
-            <section class="text-center mb-16">
-                <p class="mb-8 text-xl">
-                    Remove the Noise. Download the tool NOW.
+            <section class="text-center mb-8">
+                <p class="mb-4 text-lg">
+                    Stop Switching Tabs while you should be working.<br> <i>Get a life</i>, bruh.
                 </p>
-                <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-                    <a href="https://github.com/datavorous/focus_cli/releases/download/v0.0.1/focus_cli.zip" class="bg-white text-black px-6 py-3 rounded-lg inline-flex items-center justify-center font-bold transition duration-300 hover:bg-gray-200">
-                        <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                            <polyline points="4 17 10 11 4 5"></polyline>
-                            <line x1="12" y1="19" x2="20" y2="19"></line>
-                        </svg>
-                        Windows
+                <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6">
+                    
+
+                    <a href="#windows-download" class="bg-amine-input text-amine-text px-4 py-1 rounded-lg inline-flex items-center justify-center font-semibold transition duration-300 hover:bg-opacity-80">
+                        Windows x64
                     </a>
-                    <a href="https://github.com/datavorous/focus_cli" class="bg-white text-black px-6 py-3 rounded-lg inline-flex items-center justify-center font-bold transition duration-300 hover:bg-gray-200">
-                        <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
-                            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
-                        </svg>
-                        GitHub
+
+                    <a href="#tally-open=nGLGJO&tally-emoji-text=👋&tally-emoji-animation=wave&tally-auto-close=3000" class="bg-amine-input text-amine-text px-4 py-1 rounded-lg inline-flex items-center justify-center font-semibold transition duration-300 hover:bg-opacity-80">
+                        Request Feature
+                    </a>
+
+
+                    <a href="https://github.com/datavorous/amine" class="bg-amine-input border-amine-text text-amine-text px-8 py-4 rounded-lg inline-flex items-center justify-center font-semibold transition duration-300 hover:bg-opacity-80">
+                        Github
                     </a>
                 </div>
             </section>
         </main>
+        <footer class="text-center text-sm mt-16">
+            <p>datavorous © 2024</p>
+        </footer>
     </div>
 </body>
 </html>
