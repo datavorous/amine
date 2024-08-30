@@ -19,7 +19,7 @@
   - Blocks key combinations that might disrupt focus (e.g., Windows key, Alt+Tab).
   - Prevents mouse movement to screen edges.
 - **Fullscreen Enforcement**: Automatically enters fullscreen mode for the chosen focus website.
-- **Safe Exit Mechanism**: Allows users to exit using a predefined key combination (Ctrl+Shift+Q).
+- **Safe Exit Mechanism**: Allows users to exit using a predefined key combination (Ctrl+Shift+Q). ONLY for the NORMAL Version, the STRICT version has no such escape mechanisms.
 - **User-Friendly Interface**: Clean, responsive design built with HTML, Tailwind CSS.
 
 ## Comparison
