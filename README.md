@@ -6,7 +6,7 @@
 
 [![GitHub Release](https://img.shields.io/github/release/datavorous/amine.svg?style=flat)](https://github.com/datavorous/amine/releases)
 [![Github All Releases](https://img.shields.io/github/downloads/datavorous/amine/total.svg?style=flat)](https://github.com/datavorous/amine/releases)
-[![GitHub stars](https://img.shields.io/github/stars/datavorous/amine.svg?style=social&label=Stars&style=plastic)](https://github.com/datavorous/amine/stargazers)
+[![GitHub stars](https://img.shields.io/github/stars/datavorous/amine.svg?style=social&label=Stars&style=plastic)](https://github.com/datavorous/amine/stargazers)<br>
 <a href="https://www.producthunt.com/posts/amine?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-amine" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=484823&theme=light" alt="Amine - Prevents&#0032;you&#0032;from&#0032;Switching&#0032;Tabs&#0032;and&#0032;Wasting&#0032;your&#0032;time&#0046;&#0032; | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" /></a>
 
 ## ✨️ [DOWNLOAD for Windows](https://github.com/datavorous/amine/releases/tag/v0.0.1) 
@@ -20,7 +20,7 @@
   - Blocks key combinations that might disrupt focus (e.g., Windows key, Alt+Tab).
   - Prevents mouse movement to screen edges.
 - **Fullscreen Enforcement**: Automatically enters fullscreen mode for the chosen focus website.
-- **Safe Exit Mechanism**: Allows users to exit using a predefined key combination (Ctrl+Shift+Q). ONLY for the NORMAL Version, the STRICT version has no such escape mechanisms.
+- **Safe Exit Mechanism**: Allows users to exit using a predefined key combination (Ctrl+Shift+Q). <b>ONLY for the NORMAL Version, the STRICT version has no such escape mechanisms.</b>
 - **User-Friendly Interface**: Clean, responsive design built with HTML, Tailwind CSS.
 
 ## Comparison
