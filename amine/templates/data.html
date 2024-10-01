@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pomodoro Data</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap"
+      rel="stylesheet"
+    />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "amine-bg": "#0F1035",
+              "amine-text": "#DCF2F1",
+              "amine-input": "#365486",
+              "table-bg": "#1D1E40",
+              "table-border": "#365486",
+            },
+            fontFamily: {
+              custom: ["Poppins", "monospace"],
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+
+  <body
+    class="bg-amine-bg text-amine-text flex justify-center items-start pt-12 h-screen font-custom"
+  >
+    <div class="w-[90%] lg:w-[800px] p-5">
+      <!-- Heading -->
+      <div class="flex justify-center items-center mb-12 mt-2">
+        <h1 class="text-5xl font-custom">Pomodoro Data</h1>
+      </div>
+
+      <!-- Pomodoro Sessions Section -->
+      <h2 class="text-3xl font-semibold mb-5">Pomodoro Sessions</h2>
+      <div class="overflow-x-auto">
+        <table
+          class="min-w-full bg-table-bg border border-table-border rounded-lg"
+        >
+          <thead>
+            <tr class="text-left">
+              <th class="px-4 py-2 border-b-2 border-table-border">
+                Session ID
+              </th>
+              <th class="px-4 py-2 border-b-2 border-table-border">
+                Start Time
+              </th>
+              <th class="px-4 py-2 border-b-2 border-table-border">End Time</th>
+              <th class="px-4 py-2 border-b-2 border-table-border">
+                Total Duration (minutes)
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for session in sessions %}
+            <tr class="border-b border-table-border hover:bg-amine-input">
+              <td class="px-4 py-2">{{ session[0] }}</td>
+              <td class="px-4 py-2">{{ session[1] }}</td>
+              <td class="px-4 py-2">{{ session[2] }}</td>
+              <td class="px-4 py-2">{{ session[3] }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Distractions Section -->
+      <h2 class="text-3xl font-semibold mt-10 mb-5">Distractions</h2>
+      <div class="overflow-x-auto">
+        <table
+          class="min-w-full bg-table-bg border border-table-border rounded-lg"
+        >
+          <thead>
+            <tr class="text-left">
+              <th class="px-4 py-2 border-b-2 border-table-border">
+                Session ID
+              </th>
+              <th class="px-4 py-2 border-b-2 border-table-border">
+                Event Type
+              </th>
+              <th class="px-4 py-2 border-b-2 border-table-border">
+                Event Time
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for distraction in distractions %}
+            <tr class="border-b border-table-border hover:bg-amine-input">
+              <td class="px-4 py-2">{{ distraction[0] }}</td>
+              <td class="px-4 py-2">{{ distraction[1] }}</td>
+              <td class="px-4 py-2">{{ distraction[2] }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <h2 class="text-3xl font-semibold mt-10 mb-5">Pomodoro Session Graph</h2>
+      <div class="flex justify-center">
+        <img src="{{ url_for('session_graph') }}" alt="Session Graph" />
+      </div>
+
+      <h2 class="text-3xl font-semibold mt-10 mb-5">Distraction Heatmap</h2>
+      <div class="flex justify-center">
+        <img
+          src="{{ url_for('distraction_heatmap') }}"
+          alt="Distraction Heatmap"
+        />
+      </div>
+
+      <a href="/distraction_bar_graph" class="btn btn-primary"
+        >View Distractions per Session (Bar Graph)</a
+      >
+      <a href="/distraction_per_day_bar_graph" class="btn btn-primary"
+        >View Distractions per Day (Bar Graph)</a
+      >
+
+      <!-- Navigation Links -->
+      <div class="mt-10 flex justify-between">
+        <a
+          href="/"
+          class="text-sm font-custom bg-amine-text text-amine-bg px-4 py-2 rounded-lg"
+          >Home</a
+        >
+        <a
+          href="/help"
+          class="text-sm font-custom bg-amine-text text-amine-bg px-4 py-2 rounded-lg"
+          >Help</a
+        >
+        <a href="/export_data" class="btn btn-primary">Export Data as CSV</a>
+      </div>
+    </div>
+
+    <script>
+      // Prevent F12 key
+      document.onkeydown = function (e) {
+        if (e.key === "F12") {
+          e.preventDefault();
+        }
+      };
+
+      // Prevent right-click
+      document.addEventListener("contextmenu", function (e) {
+        e.preventDefault();
+      });
+    </script>
+  </body>
+</html>
