@@ -138,23 +138,28 @@ def start_pomodoro():
     pomodoros = int(request.form['pomodoros'])
     focus_duration = int(request.form['focus_duration'])
     break_duration = int(request.form['break_duration'])
-    website = request.form['website']
 
-    threading.Thread(target=pomodoro_flow, args=(pomodoros, focus_duration, break_duration, website)).start()
+    link_type = request.form['link_type']
+    link = request.form['link']
+
+    threading.Thread(target=pomodoro_flow, args=(pomodoros, focus_duration, break_duration, link_type, link)).start()
 
     return jsonify({'status': 'Pomodoro session started'})
 
-def pomodoro_flow(pomodoros, focus_duration, break_duration, website):
+def pomodoro_flow(pomodoros, focus_duration, break_duration, link_type, link):
     
+    if link_type == 'url':
+        webbrowser.open(link)
+        minimize_flask_window()
+        time.sleep(5) # Adjust timing as necessary
+        pyautogui.click(x=100, y=200)  
+        # this is some kind of jugad i presume
+        # ensure_fullscreen()  # This implementation failed. It Ensured the window is fullscreen
+        
+        pyautogui.press('f11')  
 
-    webbrowser.open(website)
-    minimize_flask_window()
-    time.sleep(5) # Adjust timing as necessary
-    pyautogui.click(x=100, y=200)  
-    # this is some kind of jugad i presume
-    # ensure_fullscreen()  # This implementation failed. It Ensured the window is fullscreen
-    
-    pyautogui.press('f11')  
+    elif link_type == 'file_path':
+        ...
 
     focus_protection = FocusProtection()
     #winsound.Beep(500,500)
@@ -170,7 +175,8 @@ def pomodoro_flow(pomodoros, focus_duration, break_duration, website):
 
     print("Pomodoro session completed. Exiting fullscreen...")
     winsound.Beep(1000,500)
-    pyautogui.press('f11')  # Exit fullscreen
+    if link_type == 'url': pyautogui.press('f11')  # Exit fullscreen
+    elif link_type == 'file_path': ...
     maximize_flask_window()
     print("Flask window restored.")
 

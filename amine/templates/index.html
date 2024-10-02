@@ -62,8 +62,11 @@
             style="-webkit-appearance: none; appearance: none; outline: none;">
     </div>
     <div class="flex justify-between items-center">
-        <label for="website" class="text-2xl w-28 font-custom">url</label>
-        <input type="url" id="website" name="website" required value="https://leetcode.com/"
+        <select name="link_type" id="link_type" class="bg-amine-bg">
+            <option selected value="url">URL</option>
+            <option value="file_path">File Path</option>
+        </select>
+        <input type="text" id="link" name="link" required value=""
             class="w-56 bg-amine-input border-none p-2 text-lg text-amine-text rounded-lg"
             style="outline: none;">
     </div>
