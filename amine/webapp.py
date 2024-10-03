@@ -10,6 +10,7 @@ import sys
 import pygetwindow as gw
 import winsound
 #from win11toast import toast
+import subprocess
 
 app = Flask(__name__)
 
@@ -138,23 +139,36 @@ def start_pomodoro():
     pomodoros = int(request.form['pomodoros'])
     focus_duration = int(request.form['focus_duration'])
     break_duration = int(request.form['break_duration'])
-    website = request.form['website']
 
-    threading.Thread(target=pomodoro_flow, args=(pomodoros, focus_duration, break_duration, website)).start()
+    link_type = request.form['link_type']
+    link = request.form['link']
+
+    threading.Thread(target=pomodoro_flow, args=(pomodoros, focus_duration, break_duration, link_type, link)).start()
 
     return jsonify({'status': 'Pomodoro session started'})
 
-def pomodoro_flow(pomodoros, focus_duration, break_duration, website):
+def pomodoro_flow(pomodoros, focus_duration, break_duration, link_type, link):
     
+    if link_type == 'url':
+        webbrowser.open(link)
+        minimize_flask_window()
+        time.sleep(5) # Adjust timing as necessary
+        pyautogui.click(x=100, y=200)  
+        # this is some kind of jugad i presume
+        # ensure_fullscreen()  # This implementation failed. It Ensured the window is fullscreen
+        
+        pyautogui.press('f11')
 
-    webbrowser.open(website)
-    minimize_flask_window()
-    time.sleep(5) # Adjust timing as necessary
-    pyautogui.click(x=100, y=200)  
-    # this is some kind of jugad i presume
-    # ensure_fullscreen()  # This implementation failed. It Ensured the window is fullscreen
-    
-    pyautogui.press('f11')  
+    elif link_type == 'file_path':
+
+        open_window_titles = [win for win in gw.getAllTitles() if win]
+
+        subprocess.run([link])
+
+        new_win_title = [win for win in [i for i in gw.getAllTitles() if i] if win not in open_window_titles][0]
+        new_win_controller: gw.Window = gw.getWindowsWithTitle(new_win_title)[0]
+
+        new_win_controller.maximize()
 
     focus_protection = FocusProtection()
     #winsound.Beep(500,500)
@@ -170,7 +184,10 @@ def pomodoro_flow(pomodoros, focus_duration, break_duration, website):
 
     print("Pomodoro session completed. Exiting fullscreen...")
     winsound.Beep(1000,500)
-    pyautogui.press('f11')  # Exit fullscreen
+
+    if link_type == 'url': pyautogui.press('f11')  # Exit fullscreen
+    elif link_type == 'file_path': new_win_controller.minimize()
+
     maximize_flask_window()
     print("Flask window restored.")
 
