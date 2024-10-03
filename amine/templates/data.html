@@ -34,7 +34,7 @@
   </head>
 
   <body
-    class="bg-amine-bg text-amine-text flex justify-center items-start pt-12 h-screen font-custom"
+    class="bg-amine-bg text-amine-text flex justify-center items-start pt-12 h-full font-custom"
   >
     <div class="w-[90%] lg:w-[800px] p-5">
       <!-- Heading -->
@@ -75,56 +75,82 @@
         </table>
       </div>
 
-      <!-- Distractions Section -->
+      <!-- Dropdown for Distractions Section -->
       <h2 class="text-3xl font-semibold mt-10 mb-5">Distractions</h2>
-      <div class="overflow-x-auto">
-        <table
-          class="min-w-full bg-table-bg border border-table-border rounded-lg"
+      <div>
+        <button
+          id="distraction-toggle"
+          class="text-lg font-medium bg-amine-input py-2 px-4 rounded-lg"
         >
-          <thead>
-            <tr class="text-left">
-              <th class="px-4 py-2 border-b-2 border-table-border">
-                Session ID
-              </th>
-              <th class="px-4 py-2 border-b-2 border-table-border">
-                Event Type
-              </th>
-              <th class="px-4 py-2 border-b-2 border-table-border">
-                Event Time
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for distraction in distractions %}
-            <tr class="border-b border-table-border hover:bg-amine-input">
-              <td class="px-4 py-2">{{ distraction[0] }}</td>
-              <td class="px-4 py-2">{{ distraction[1] }}</td>
-              <td class="px-4 py-2">{{ distraction[2] }}</td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
+          Show Distraction Data
+        </button>
+        <div id="distraction-section" class="overflow-x-auto hidden mt-4">
+          <table
+            class="min-w-full bg-table-bg border border-table-border rounded-lg"
+          >
+            <thead>
+              <tr class="text-left">
+                <th class="px-4 py-2 border-b-2 border-table-border">
+                  Session ID
+                </th>
+                <th class="px-4 py-2 border-b-2 border-table-border">
+                  Event Type
+                </th>
+                <th class="px-4 py-2 border-b-2 border-table-border">
+                  Event Time
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for distraction in distractions %}
+              <tr class="border-b border-table-border hover:bg-amine-input">
+                <td class="px-4 py-2">{{ distraction[0] }}</td>
+                <td class="px-4 py-2">{{ distraction[1] }}</td>
+                <td class="px-4 py-2">{{ distraction[2] }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
       </div>
 
+      <!-- Graph Section -->
       <h2 class="text-3xl font-semibold mt-10 mb-5">Pomodoro Session Graph</h2>
       <div class="flex justify-center">
-        <img src="{{ url_for('session_graph') }}" alt="Session Graph" />
+        <img
+          class="w-full max-w-[600px] h-auto"
+          src="{{ url_for('session_graph') }}"
+          alt="Session Graph"
+        />
       </div>
 
       <h2 class="text-3xl font-semibold mt-10 mb-5">Distraction Heatmap</h2>
       <div class="flex justify-center">
         <img
+          class="w-full max-w-[600px] h-auto"
           src="{{ url_for('distraction_heatmap') }}"
           alt="Distraction Heatmap"
         />
       </div>
 
-      <a href="/distraction_bar_graph" class="btn btn-primary"
-        >View Distractions per Session (Bar Graph)</a
-      >
-      <a href="/distraction_per_day_bar_graph" class="btn btn-primary"
-        >View Distractions per Day (Bar Graph)</a
-      >
+      <!-- Additional Graphs -->
+      <h2 class="text-3xl font-semibold mt-10 mb-5">Cumulative Focus Time</h2>
+      <div class="flex justify-center">
+        <img
+          class="w-full max-w-[600px] h-auto"
+          src="{{ url_for('cumulative_focus_time') }}"
+          alt="Cumulative Focus Time"
+        />
+      </div>
+
+      <h2 class="text-3xl font-semibold mt-10 mb-5">Distraction Pie Chart</h2>
+      <div class="flex justify-center">
+        <img
+          class="w-full max-w-[600px] h-auto"
+          src="{{ url_for('distraction_pie_chart') }}"
+          alt="Distraction Pie Chart"
+        />
+      </div>
 
       <!-- Navigation Links -->
       <div class="mt-10 flex justify-between">
@@ -138,11 +164,32 @@
           class="text-sm font-custom bg-amine-text text-amine-bg px-4 py-2 rounded-lg"
           >Help</a
         >
-        <a href="/export_data" class="btn btn-primary">Export Data as CSV</a>
+        <a
+          href="/export_data"
+          class="text-sm font-custom bg-amine-text text-amine-bg px-4 py-2 rounded-lg"
+          >Export Data as CSV</a
+        >
       </div>
     </div>
 
+    <!-- Scripts -->
     <script>
+      // Toggle distractions table visibility
+      document
+        .getElementById("distraction-toggle")
+        .addEventListener("click", function () {
+          const distractionSection = document.getElementById(
+            "distraction-section"
+          );
+          if (distractionSection.classList.contains("hidden")) {
+            distractionSection.classList.remove("hidden");
+            this.innerText = "Hide Distraction Data";
+          } else {
+            distractionSection.classList.add("hidden");
+            this.innerText = "Show Distraction Data";
+          }
+        });
+
       // Prevent F12 key
       document.onkeydown = function (e) {
         if (e.key === "F12") {

@@ -12,6 +12,9 @@ flask = "^3.0.3"
 pyautogui = "^0.9.54"
 keyboard = "^0.13.5"
 pygetwindow = "^0.0.9"
+seaborn = "^0.13.2"
+plyer = "^2.1.0"
+plotly = "^5.24.1"
 
 
 [tool.poetry.group.dev.dependencies]

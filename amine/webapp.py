@@ -7,26 +7,23 @@ import winsound
 import pyautogui
 import threading
 import webbrowser
-
 import matplotlib
-
-matplotlib.use("Agg")
-
 import pandas as pd
 import seaborn as sns
 from io import BytesIO
 import pygetwindow as gw
 from flask import send_file
+import plotly.express as px
 from plyer import notification
 import matplotlib.pyplot as plt
 from flaskwebgui import FlaskUI
+import matplotlib.dates as mdates
 from datetime import datetime, timedelta
 from flask import Flask, render_template, request, jsonify
 
-# Initialize Flask application
 app = Flask(__name__)
+matplotlib.use("Agg")
 
-# Configuration settings
 CONFIG = {
     "SAFE_X": 500,
     "SAFE_Y": 500,
@@ -48,7 +45,6 @@ CONFIG = {
 }
 
 
-# Set up logging
 def setup_logging():
     logger = logging.getLogger("amine")
     logger.setLevel(logging.INFO)
@@ -77,70 +73,83 @@ logger = setup_logging()
 class FocusProtection:
     def __init__(self, config=CONFIG, session_id=None):
         self.config = config
-        pyautogui.FAILSAFE = False
-        self.protection_active = False
         self.mouse_thread = None
+        pyautogui.FAILSAFE = False
+        self.session_id = session_id
+        self.protection_active = False
         self.key_tracking_thread = None
         self.fullscreen_tracking_thread = None
-        self.session_id = session_id
 
     def track_key_attempts(self):
-        logger.info("Tracking key press attempts.")
+        logger.info("Tracking Key Press Attempts.")
 
         def on_key_event(event):
             if event.name in self.config["BLOCKED_KEYS"]:
-                logger.warning(f"Attempted to press blocked key: {event.name}")
-                log_distraction(self.session_id, f"Blocked Key Press: {event.name}")
+                logger.warning(f"Attempted To Press Blocked Key : {event.name}")
+                log_distraction(self.session_id, f"Blocked Key Press : {event.name}")
+                winsound.Beep(500, 500)
 
         keyboard.hook(on_key_event)
 
+        while self.protection_active:
+            time.sleep(1)
+
+        keyboard.unhook(on_key_event)
+
     def track_fullscreen_exit(self):
-        logger.info("Tracking fullscreen exits.")
+        logger.info("Tracking Fullscreen Exists.")
         screen_width, screen_height = pyautogui.size()
+        tolerance = 10
 
         while self.protection_active:
             try:
                 windows = gw.getWindowsWithTitle("amine")
                 if windows:
                     window = windows[0]
-                    # Check if the window is not fullscreen by comparing its size to the screen size
-                    if window.width < screen_width or window.height < screen_height:
-                        logger.warning("User exited fullscreen!")
-                        log_distraction(self.session_id, "Fullscreen Exit")
+                    if (
+                        window.width <= screen_width - tolerance
+                        or window.height <= screen_height - tolerance
+                    ):
+                        pass
                 time.sleep(1)
             except Exception as e:
-                logger.error(f"Error tracking fullscreen: {e}")
+                logger.error(f"Error Tracking Fullscreen: {e}")
 
     def enforce_mouse_boundaries(self):
+        edge_threshold = 10
         screen_width, screen_height = pyautogui.size()
-        logger.info("Mouse boundary enforcement started.")
+        logger.info("Mouse Boundary Enforcement Started.")
         while self.protection_active:
             try:
                 x, y = pyautogui.position()
                 if (
-                    y < self.config["TOP_SCREEN_THRESHOLD"]
-                    or y > screen_height - self.config["TOP_SCREEN_THRESHOLD"]
+                    x <= edge_threshold
+                    or y <= edge_threshold
+                    or x >= screen_width - edge_threshold
+                    or y >= screen_height - edge_threshold
+                    or y <= self.config["TOP_SCREEN_THRESHOLD"]
                 ):
                     pyautogui.moveTo(self.config["SAFE_X"], self.config["SAFE_Y"])
+                    log_distraction(self.session_id, "Mouse Boundary Violation")
                 time.sleep(self.config["MOUSE_ENFORCE_DELAY"])
             except Exception as e:
-                logger.error(f"Error enforcing mouse boundaries: {e}")
-        logger.info("Mouse boundary enforcement ended.")
+                logger.error(f"Error Enforcing Mouse Boundaries: {e}")
+        logger.info("Mouse Boundary Enforcement Ended.")
 
     def block_keys(self):
-        logger.info("Blocking keys.")
+        logger.info("Blocking Keys.")
         try:
             for key in self.config["BLOCKED_KEYS"]:
                 keyboard.block_key(key)
         except Exception as e:
-            logger.error(f"Error blocking keys: {e}")
+            logger.error(f"Error Blocking Keys: {e}")
 
     def unblock_keys(self):
-        logger.info("Unblocking all keys.")
+        logger.info("Unblocking All Keys.")
         try:
             keyboard.unhook_all()
         except Exception as e:
-            logger.error(f"Error unblocking keys: {e}")
+            logger.error(f"Error Unblocking Keys: {e}")
 
     def block_distractions(self, duration_minutes):
         end_time = datetime.now() + timedelta(minutes=duration_minutes)
@@ -164,7 +173,7 @@ class FocusProtection:
         try:
             while datetime.now() < end_time:
                 if keyboard.is_pressed(self.config["EXIT_COMBO"]):
-                    logger.info("Exit combo pressed, exiting.")
+                    logger.info("Exit Combo Pressed, Exiting.")
                     break
                 time.sleep(0.1)
         finally:
@@ -174,11 +183,11 @@ class FocusProtection:
             self.fullscreen_tracking_thread.join()
             self.unblock_keys()
             logger.info(
-                f"Distraction blocking finished after {duration_minutes} minutes."
+                f"Distraction Blocking Finished After {duration_minutes} Minutes."
             )
 
     def start_protection(self, duration_minutes):
-        logger.info(f"Starting focus protection for {duration_minutes} minutes.")
+        logger.info(f"Starting Focus Protection For {duration_minutes} Minutes.")
         self.block_distractions(duration_minutes)
 
 
@@ -187,7 +196,7 @@ def notify_user(message):
     try:
         notification.notify(title="Amine Pomodoro", message=message, timeout=10)
     except Exception as e:
-        logger.error(f"Error sending notification: {e}")
+        logger.error(f"Error Sending Notification: {e}")
 
 
 def init_db():
@@ -215,9 +224,9 @@ def init_db():
                 )
             """
             )
-        logger.info("Database initialized successfully.")
+        logger.info("Database Initialized Successfully.")
     except sqlite3.Error as e:
-        logger.error(f"Database initialization error: {e}")
+        logger.error(f"Database Initialization Error: {e}")
 
 
 def log_distraction(session_id, event_type):
@@ -335,7 +344,6 @@ def distraction_graph():
     df = pd.read_sql_query("SELECT event_time, event_type FROM distractions", conn)
     conn.close()
 
-    # Count the distractions per day
     df["event_time"] = pd.to_datetime(df["event_time"])
     distractions_per_day = df.groupby(df["event_time"].dt.date).size()
 
@@ -359,18 +367,22 @@ def distraction_heatmap():
     df = pd.read_sql_query("SELECT event_time FROM distractions", conn)
     conn.close()
 
-    # Convert to time of day
-    df["event_time"] = pd.to_datetime(df["event_time"])
-    df["hour"] = df["event_time"].dt.hour
-    heatmap_data = df["hour"].value_counts().sort_index()
-
-    if heatmap_data.empty:
+    if df.empty:
         return "No distraction data available."
 
-    plt.figure(figsize=(10, 5))
-    sns.heatmap([heatmap_data.values], cmap="coolwarm", cbar=True, linewidths=0.5)
-    plt.title("Distractions Heatmap (Hourly)")
+    df["event_time"] = pd.to_datetime(df["event_time"])
+    df["hour"] = df["event_time"].dt.hour
+    df["day"] = df["event_time"].dt.date
+
+    heatmap_data = df.pivot_table(
+        index="day", columns="hour", aggfunc="size", fill_value=0
+    )
+
+    plt.figure(figsize=(12, 6))
+    sns.heatmap(heatmap_data, cmap="coolwarm", cbar=True, linewidths=0.5)
+    plt.title("Hourly Distractions Heatmap")
     plt.xlabel("Hour of Day")
+    plt.ylabel("Date")
 
     img = BytesIO()
     plt.savefig(img, format="png")
@@ -383,18 +395,15 @@ def distraction_heatmap():
 def export_data():
     try:
         with sqlite3.connect("amine_data.db") as conn:
-            # Fetch session data
+
             sessions_df = pd.read_sql_query("SELECT * FROM sessions", conn)
-            # Fetch distraction data
+
             distractions_df = pd.read_sql_query("SELECT * FROM distractions", conn)
 
-            # Combine into a single CSV (or separate them)
             combined_csv = pd.concat([sessions_df, distractions_df], axis=1)
 
-            # Convert to CSV
             csv_data = combined_csv.to_csv(index=False)
 
-            # Send the CSV as a file download
             return send_file(
                 BytesIO(csv_data.encode("utf-8")),
                 mimetype="text/csv",
@@ -406,65 +415,47 @@ def export_data():
         return jsonify({"error": "Failed to export data"}), 500
 
 
-@app.route("/distraction_bar_graph")
-def distraction_bar_graph():
-    try:
-        # Connect to the database
-        conn = sqlite3.connect("amine_data.db")
-        df = pd.read_sql_query(
-            "SELECT session_id, COUNT(*) as distraction_count FROM distractions GROUP BY session_id",
-            conn,
-        )
-        conn.close()
+@app.route("/cumulative_focus_time")
+def cumulative_focus_time():
+    conn = sqlite3.connect("amine_data.db")
+    df = pd.read_sql_query("SELECT start_time, total_duration FROM sessions", conn)
+    conn.close()
 
-        # Plot the data
-        plt.figure(figsize=(10, 5))
-        plt.bar(df["session_id"], df["distraction_count"], color="skyblue")
-        plt.xlabel("Session ID")
-        plt.ylabel("Number of Distractions")
-        plt.title("Number of Distractions per Session")
-        plt.grid(True)
+    df["start_time"] = pd.to_datetime(df["start_time"])
+    df["cumulative_duration"] = df["total_duration"].cumsum()
 
-        # Save the plot to a BytesIO object to send as a response
-        img = BytesIO()
-        plt.savefig(img, format="png")
-        img.seek(0)
-        plt.close()
-        return send_file(img, mimetype="image/png")
-    except Exception as e:
-        logger.error(f"Error creating distraction bar graph: {e}")
-        return jsonify({"error": "Failed to create distraction bar graph"}), 500
+    fig = px.area(
+        df,
+        x="start_time",
+        y="cumulative_duration",
+        title="Cumulative Focus Time Over Sessions",
+        labels={
+            "start_time": "Session Start Time",
+            "cumulative_duration": "Cumulative Duration (minutes)",
+        },
+    )
+
+    img = BytesIO()
+    fig.write_image(img, format="png")
+    img.seek(0)
+    return send_file(img, mimetype="image/png")
 
 
-@app.route("/distraction_per_day_bar_graph")
-def distraction_per_day_bar_graph():
-    try:
-        # Connect to the database
-        conn = sqlite3.connect("amine_data.db")
-        df = pd.read_sql_query(
-            "SELECT DATE(event_time) as distraction_day, COUNT(*) as distraction_count FROM distractions GROUP BY distraction_day",
-            conn,
-        )
-        conn.close()
+@app.route("/distraction_pie_chart")
+def distraction_pie_chart():
+    conn = sqlite3.connect("amine_data.db")
+    df = pd.read_sql_query(
+        "SELECT event_type, COUNT(*) as count FROM distractions GROUP BY event_type",
+        conn,
+    )
+    conn.close()
 
-        # Plot the data
-        plt.figure(figsize=(10, 5))
-        plt.bar(df["distraction_day"], df["distraction_count"], color="lightcoral")
-        plt.xlabel("Date")
-        plt.ylabel("Number of Distractions")
-        plt.title("Number of Distractions per Day")
-        plt.xticks(rotation=45)
-        plt.grid(True)
+    fig = px.pie(df, values="count", names="event_type", title="Types of Distractions")
 
-        # Save the plot to a BytesIO object to send as a response
-        img = BytesIO()
-        plt.savefig(img, format="png")
-        img.seek(0)
-        plt.close()
-        return send_file(img, mimetype="image/png")
-    except Exception as e:
-        logger.error(f"Error creating distraction per day bar graph: {e}")
-        return jsonify({"error": "Failed to create distraction per day bar graph"}), 500
+    img = BytesIO()
+    fig.write_image(img, format="png")
+    img.seek(0)
+    return send_file(img, mimetype="image/png")
 
 
 def pomodoro_flow(pomodoros, focus_duration, break_duration, website):
