@@ -1,124 +1,168 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>amine</title>
-    
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-    
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'amine-bg': '#0F1035',
-                        'amine-text': '#DCF2F1',
-                        'amine-input': '#365486',
-                    },
-                    fontFamily: {
-                        'custom': ['Poppins', 'monospace'], 
-                    }
-                }
-            }
-        }
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "amine-bg": "#0F1035",
+              "amine-text": "#DCF2F1",
+              "amine-input": "#365486",
+            },
+            fontFamily: {
+              custom: ["Poppins", "monospace"],
+            },
+          },
+        },
+      };
     </script>
-</head>
+  </head>
 
-
-<body class="bg-amine-bg text-amine-text flex justify-center items-start pt-12 h-screen font-custom">
-    
+  <body
+    class="bg-amine-bg text-amine-text flex justify-center items-start pt-12 h-screen font-custom"
+  >
     <div class="w-[400px] p-5">
-        <div class="flex justify-center items-center mb-12 mt-2">
-            <h1 class="text-7xl font-custom">amine</h1>
-            
+      <!-- Title -->
+      <div class="flex justify-center items-center mb-12 mt-2">
+        <h1 class="text-7xl font-custom">amine</h1>
+      </div>
+
+      <!-- Pomodoro Form -->
+      <form id="pomodoro-form" class="space-y-4">
+        <div class="flex justify-between items-center">
+          <label for="pomodoros" class="text-2xl w-28 font-custom"
+            >sessions</label
+          >
+          <input
+            type="number"
+            id="pomodoros"
+            name="pomodoros"
+            required
+            min="1"
+            value="4"
+            class="w-56 bg-amine-input border-none p-2 text-lg text-amine-text rounded-lg appearance-none"
+            style="-webkit-appearance: none; appearance: none; outline: none"
+          />
         </div>
-        
-
-
-<form id="pomodoro-form" class="space-y-4">
-    
-    <div class="flex justify-between items-center">
-        <label for="pomodoros" class="text-2xl w-28 font-custom">sessions</label>
-        
-        <input type="number" id="pomodoros" name="pomodoros" required min="1" value="4"
+        <div class="flex justify-between items-center">
+          <label for="focus_duration" class="text-2xl w-28 font-custom"
+            >focus</label
+          >
+          <input
+            type="number"
+            id="focus_duration"
+            name="focus_duration"
+            required
+            min="1"
+            value="25"
             class="w-56 bg-amine-input border-none p-2 text-lg text-amine-text rounded-lg appearance-none"
-            style="-webkit-appearance: none; appearance: none; outline: none;">
-    </div>
-    <div class="flex justify-between items-center">
-        <label for="focus_duration" class="text-2xl w-28 font-custom">focus</label>
-        <input type="number" id="focus_duration" name="focus_duration" required min="1" value="25"
+            style="-webkit-appearance: none; appearance: none; outline: none"
+          />
+        </div>
+        <div class="flex justify-between items-center">
+          <label for="break_duration" class="text-2xl w-28 font-custom"
+            >break</label
+          >
+          <input
+            type="number"
+            id="break_duration"
+            name="break_duration"
+            required
+            min="1"
+            value="5"
             class="w-56 bg-amine-input border-none p-2 text-lg text-amine-text rounded-lg appearance-none"
-            style="-webkit-appearance: none; appearance: none; outline: none;">
-    </div>
-    <div class="flex justify-between items-center">
-        <label for="break_duration" class="text-2xl w-28 font-custom">break</label>
-        <input type="number" id="break_duration" name="break_duration" required min="1" value="5"
-            class="w-56 bg-amine-input border-none p-2 text-lg text-amine-text rounded-lg appearance-none"
-            style="-webkit-appearance: none; appearance: none; outline: none;">
-    </div>
-    <div class="flex justify-between items-center">
-        <label for="website" class="text-2xl w-28 font-custom">url</label>
-        <input type="url" id="website" name="website" required value="https://leetcode.com/"
+            style="-webkit-appearance: none; appearance: none; outline: none"
+          />
+        </div>
+        <div class="flex justify-between items-center">
+          <select name="link_type" id="link_type" class="bg-amine-bg">
+            <option value="website">URL</option>
+            <option selected value="file_path">File Path</option>
+          </select>
+          <input
+            type="text"
+            id="link"
+            name="link"
+            required
+            value="C:\Windows\System32\calc.exe"
             class="w-56 bg-amine-input border-none p-2 text-lg text-amine-text rounded-lg"
-            style="outline: none;">
-    </div>
-    <div class="flex justify-center" style="margin-top: 3rem;">
-        <button type="submit" class="bg-amine-text text-amine-bg border-none px-5 py-2 text-2xl cursor-pointer w-36 flex justify-center items-center rounded-lg">
+            style="outline: none"
+          />
+        </div>
+        <div class="flex justify-center" style="margin-top: 3rem">
+          <button
+            type="submit"
+            class="bg-amine-text text-amine-bg border-none px-5 py-2 text-2xl cursor-pointer w-36 flex justify-center items-center rounded-lg"
+          >
             <span class="mx-auto font-custom">Start</span>
-        </button>
-    </div>
-</form>
+          </button>
+        </div>
+      </form>
 
-
-    <div class="absolute bottom-5 left-5 text-sm font-custom">
+      <!-- Help and Exit Combo -->
+      <div class="absolute bottom-5 left-5 text-sm font-custom">
         Press <strong>{{ exit_combo }}</strong> to quit anytime.
+      </div>
+      <a href="/help">
+        <div class="absolute bottom-5 right-5 text-sm font-custom">help?</div>
+      </a>
+
+      <script>
+        document
+          .getElementById("link_type")
+          .addEventListener("change", function () {
+            const linkInput = document.getElementById("link");
+            if (this.value === "website") {
+              linkInput.value = "www.leetcode.com";
+            } else {
+              linkInput.value = "C:\\Windows\\System32\\calc.exe";
+            }
+          });
+        document
+          .getElementById("pomodoro-form")
+          .addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            // Collect form data into JSON
+            var formData = {
+              pomodoros: document.getElementById("pomodoros").value,
+              focus_duration: document.getElementById("focus_duration").value,
+              break_duration: document.getElementById("break_duration").value,
+              link_type: document.getElementById("link_type").value,
+              link: document.getElementById("link").value,
+            };
+
+            // Send JSON data to Flask backend
+            fetch("/start_pomodoro", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(formData), // Convert the form data to JSON
+            })
+              .then((response) => response.json())
+              .then((data) => {
+                // TODO: Handle success or error response
+                console.log(data);
+              })
+              .catch((error) => {
+                console.error("Error:", error);
+              });
+          });
+      </script>
     </div>
-    <a href="/help"><div class="absolute bottom-5 right-5 text-sm font-custom">help?</div></a>
-    <a href="/data"><div class="absolute top-5 right-5 text-sm font-custom">data</div></a>
-
-    <script>
-        document.getElementById('pomodoro-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            var formData = new FormData(this);
-
-            fetch('/start_pomodoro', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                // TODO 
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-        });
-
-
-
-
-
-
-    // Prevent F12 key
-    document.onkeydown = function (e) {
-        if (e.key === "F12") {
-            e.preventDefault();
-        }
-    };
-
-    // Prevent right-click 
-    document.addEventListener("contextmenu", function (e) {
-        e.preventDefault();
-    });
-
-
-
-    </script>
-</body>
+  </body>
 </html>

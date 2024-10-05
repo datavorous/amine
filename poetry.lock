@@ -4095,6 +4095,16 @@ files = [
 ]
 
 [[package]]
+name = "subprocess-run"
+version = "0.0.8"
+description = "The subprocess module extension to run processes."
+optional = false
+python-versions = "*"
+files = [
+    {file = "subprocess.run-0.0.8.tar.gz", hash = "sha256:5760270139acc4cc4058184e539f5b613dbe0073d84ee43247c2e0fc5c04db4e"},
+]
+
+[[package]]
 name = "tenacity"
 version = "9.0.0"
 description = "Retry code until it succeeds"
@@ -4159,4 +4169,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = "<3.14,>=3.9"
-content-hash = "09965bbb49ee72191a2ac8c4f039309b41b1626640a1387fc2dd384847509f1e"
+content-hash = "f751ee16e342435db6cec802e33f801987424d2fb96b6190203f64bff8df4e9d"

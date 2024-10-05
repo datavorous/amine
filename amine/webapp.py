@@ -6,6 +6,7 @@ import keyboard
 import winsound
 import pyautogui
 import threading
+import subprocess
 import webbrowser
 import matplotlib
 import pandas as pd
@@ -27,7 +28,7 @@ matplotlib.use("Agg")
 CONFIG = {
     "SAFE_X": 500,
     "SAFE_Y": 500,
-    "TOP_SCREEN_THRESHOLD": 40,
+    "TOP_SCREEN_THRESHOLD": 50,
     "BLOCKED_KEYS": [
         "left windows",
         "right windows",
@@ -116,7 +117,7 @@ class FocusProtection:
                 logger.error(f"Error Tracking Fullscreen: {e}")
 
     def enforce_mouse_boundaries(self):
-        edge_threshold = 10
+        edge_threshold = 50
         screen_width, screen_height = pyautogui.size()
         logger.info("Mouse Boundary Enforcement Started.")
         while self.protection_active:
@@ -125,7 +126,6 @@ class FocusProtection:
                 if (
                     x <= edge_threshold
                     or y <= edge_threshold
-                    or x >= screen_width - edge_threshold
                     or y >= screen_height - edge_threshold
                     or y <= self.config["TOP_SCREEN_THRESHOLD"]
                 ):
@@ -301,14 +301,17 @@ def display_data():
 @app.route("/start_pomodoro", methods=["POST"])
 def start_pomodoro():
     try:
-        pomodoros = int(request.form["pomodoros"])
-        focus_duration = int(request.form["focus_duration"])
-        break_duration = int(request.form["break_duration"])
-        website = request.form["website"]
+        data = request.json
+
+        pomodoros = int(data["pomodoros"])
+        focus_duration = int(data["focus_duration"])
+        break_duration = int(data["break_duration"])
+        link_type = data["link_type"]
+        link = data["link"]
 
         threading.Thread(
             target=pomodoro_flow,
-            args=(pomodoros, focus_duration, break_duration, website),
+            args=(pomodoros, focus_duration, break_duration, link, link_type),
         ).start()
 
         logger.info("Pomodoro session started.")
@@ -458,14 +461,36 @@ def distraction_pie_chart():
     return send_file(img, mimetype="image/png")
 
 
-def pomodoro_flow(pomodoros, focus_duration, break_duration, website):
+def pomodoro_flow(pomodoros, focus_duration, break_duration, link, link_type):
     start_time = datetime.now()
 
-    webbrowser.open(website)
-    manage_flask_window("minimize")
-    time.sleep(5)
-    pyautogui.click(x=100, y=200)
-    pyautogui.press("f11")
+    if link_type == "website":
+        logger.info("Opening website.")
+        webbrowser.open(link)
+        manage_flask_window("minimize")
+        time.sleep(5)
+        pyautogui.click(x=100, y=200)
+        pyautogui.press("f11")
+
+    elif link_type == "file_path":
+        logger.info("Opening file path.")
+        open_window_titles = [win for win in gw.getAllTitles() if win]
+
+        subprocess.run([link])
+
+        try:
+            new_win_title = [
+                win
+                for win in [i for i in gw.getAllTitles() if i]
+                if win not in open_window_titles
+            ][0]
+            new_win_controller: gw.Window = gw.getWindowsWithTitle(new_win_title)[0]
+
+            new_win_controller.maximize()
+        except Exception as e:
+            logger.error(f"Error opening application: {e}")
+            notify_user("Error opening application. Please try again.")
+            return
 
     with sqlite3.connect("amine_data.db") as conn:
         c = conn.cursor()
@@ -501,12 +526,15 @@ def pomodoro_flow(pomodoros, focus_duration, break_duration, website):
 
     logger.info("Pomodoro session completed. Exiting fullscreen...")
     winsound.Beep(1000, 500)
-    pyautogui.press("f11")
-    manage_flask_window("maximize")
+    if link_type == "website":
+        pyautogui.press("f11")
+        manage_flask_window("maximize")
+    elif link_type == "file_path":
+        new_win_controller.minimize()
     notify_user("Pomodoro session completed.")
     logger.info("Flask window restored.")
 
 
 if __name__ == "__main__":
     init_db()
-    FlaskUI(app=app, server="flask", width=470, height=628).run()
+    FlaskUI(app=app, server="flask", width=470, height=678).run()
