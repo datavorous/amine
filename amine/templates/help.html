@@ -1,72 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>help</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap" rel="stylesheet">
-    
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap"
+      rel="stylesheet"
+    />
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'amine-bg': '#0F1035',
-                        'amine-text': '#DCF2F1',
-                        'amine-input': '#365486',
-                    },
-                    fontFamily: {
-                        'custom': ['Poppins', 'monospace'], 
-                    }
-                }
-            }
-        }
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "amine-bg": "#0F1035",
+              "amine-text": "#DCF2F1",
+              "amine-input": "#365486",
+            },
+            fontFamily: {
+              custom: ["Poppins", "monospace"],
+            },
+          },
+        },
+      };
     </script>
-</head>
+  </head>
 
-<body class="bg-amine-bg text-amine-text flex justify-center items-start pt-10 h-screen font-custom">
+  <body
+    class="bg-amine-bg text-amine-text flex justify-center items-start pt-10 h-screen font-custom"
+  >
     <div class="w-[600px] p-5">
-        <div class="flex justify-center items-center mb-12 mt-2">
-            <h1 class="text-7xl font-custom">help</h1>
-        </div>
+      <div class="flex justify-center items-center mb-12 mt-2">
+        <h1 class="text-7xl font-custom">help</h1>
+      </div>
 
-        <div class="space-y-6">
-            <p class="text-lg">
-                1. To begin a Pomodoro session, complete the form on the main page and click "Start." <br>
-                2. Specify the number of Pomodoros, focus time, break duration, and the website to focus on.<br>
-                3. Avoid moving your mouse to the screen's top or bottom edges, and don’t manually exit fullscreen mode as it may disrupt the process.<br>
-                4. A page click ensures fullscreen but could cause minor issues.
-            </p>
-        </div>
+      <div class="space-y-6">
+        <p class="text-lg">
+          1. To begin a Pomodoro session, complete the form on the main page and
+          click "Start." <br />
+          2. Specify the number of Pomodoros, focus time, break duration, and
+          the website to focus on.<br />
+          3. Avoid moving your mouse to the screen's top or bottom edges, and
+          don’t manually exit fullscreen mode as it may disrupt the process.<br />
+          4. A page click ensures fullscreen but could cause minor issues.
+        </p>
+      </div>
 
-
-        <div class="absolute bottom-5 left-5 text-sm font-custom">
+      <div class="absolute bottom-5 left-5 text-sm font-custom">
         Contact [bhattacharjeesagnik910@gmail.com]
-        </div>
+      </div>
 
-
-        <a href="/"><div class="absolute bottom-5 right-5 text-sm font-custom">
-            Home
-        </div></a>
+      <a href="/"
+        ><div class="absolute bottom-5 right-5 text-sm font-custom">
+          Home
+        </div></a
+      >
     </div>
     <script>
-        
-        // Prevent F12 key
-    document.onkeydown = function (e) {
+      // Prevent F12 key
+      document.onkeydown = function (e) {
         if (e.key === "F12") {
-            e.preventDefault();
+          e.preventDefault();
         }
-    };
+      };
 
-    // Prevent right-click 
-    document.addEventListener("contextmenu", function (e) {
+      // Prevent right-click
+      document.addEventListener("contextmenu", function (e) {
         e.preventDefault();
-    });
-
+      });
     </script>
-</body>
+  </body>
 </html>
