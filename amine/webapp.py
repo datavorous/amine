@@ -21,6 +21,9 @@ from flaskwebgui import FlaskUI
 import matplotlib.dates as mdates
 from datetime import datetime, timedelta
 from flask import Flask, render_template, request, jsonify
+import os
+import validators
+import requests
 
 app = Flask(__name__)
 matplotlib.use("Agg")
@@ -174,6 +177,7 @@ class FocusProtection:
             while datetime.now() < end_time:
                 if keyboard.is_pressed(self.config["EXIT_COMBO"]):
                     logger.info("Exit Combo Pressed, Exiting.")
+                    notify_user("Exiting Amine Focus Session.")
                     break
                 time.sleep(0.1)
         finally:
@@ -465,6 +469,26 @@ def pomodoro_flow(pomodoros, focus_duration, break_duration, link, link_type):
     start_time = datetime.now()
 
     if link_type == "website":
+        if not link.startswith(("http://", "https://")):
+            link = "http://" + link
+
+        if not validators.url(link):
+            logger.error("Invalid URL.")
+            notify_user("Invalid URL. Please try again.")
+            return
+
+        try:
+            response = requests.head(link, allow_redirects=True)
+            logger.info(f"Checking URL: {response.status_code}")
+            if response.status_code >= 400:
+                logger.error("The URL does not exist.")
+                notify_user("The URL does not exist. Please try again.")
+                return
+        except requests.RequestException as e:
+            logger.error(f"Error checking URL: {e}")
+            notify_user("Error checking URL. Please try again.")
+            return
+
         logger.info("Opening website.")
         webbrowser.open(link)
         manage_flask_window("minimize")
@@ -473,10 +497,20 @@ def pomodoro_flow(pomodoros, focus_duration, break_duration, link, link_type):
         pyautogui.press("f11")
 
     elif link_type == "file_path":
+        if not os.path.exists(link):
+            logger.error("Invalid file path.")
+            notify_user("Invalid file path. Please try again.")
+            return
+
         logger.info("Opening file path.")
         open_window_titles = [win for win in gw.getAllTitles() if win]
 
-        subprocess.run([link])
+        try:
+            subprocess.run([link])
+        except Exception as e:
+            logger.error(f"Error opening file path: {e}")
+            notify_user("The file which you are trying to open is not supported.")
+            return
 
         try:
             new_win_title = [
