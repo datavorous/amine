@@ -28,12 +28,26 @@
                         'amine-bg': '#090a24',
                         'amine-text': '#DCF2F1',
                         'amine-input': '#365486',
+                        'light-bg': '#ffffff',
+                        'light-text': '#000000',
                     },
                     fontFamily: {
                         'custom': ['Poppins', 'sans-serif'],
                     }
                 }
             }
+        }
+    </script>
+    <script>
+        function toggleLightMode() {
+            const body = document.body;
+            const currentBgColor = body.classList.contains('bg-amine-bg') ? 'bg-amine-bg' : 'bg-light-bg';
+            const currentTextColor = body.classList.contains('text-amine-text') ? 'text-amine-text' : 'text-light-text';
+            
+            body.classList.toggle('bg-amine-bg');
+            body.classList.toggle('bg-light-bg');
+            body.classList.toggle('text-amine-text');
+            body.classList.toggle('text-light-text');
         }
     </script>
 </head>
@@ -51,6 +65,9 @@
                 </p>
                 <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6">
                     
+                    <button onclick="toggleLightMode()" class="bg-amine-input text-amine-text px-4 py-1 rounded-lg inline-flex items-center justify-center font-semibold transition duration-300 hover:bg-opacity-80">
+                        Toggle Light Mode
+                    </button>
 
                     <a href="https://github.com/datavorous/amine/releases/tag/v0.0.1" class="bg-amine-input text-amine-text px-4 py-1 rounded-lg inline-flex items-center justify-center font-semibold transition duration-300 hover:bg-opacity-80">
                         Windows x64
@@ -59,7 +76,6 @@
                     <a href="#tally-open=nGLGJO&tally-emoji-text=👋&tally-emoji-animation=wave&tally-auto-close=3000" class="bg-amine-input text-amine-text px-4 py-1 rounded-lg inline-flex items-center justify-center font-semibold transition duration-300 hover:bg-opacity-80">
                         Request Feature
                     </a>
-
 
                     <a href="https://github.com/datavorous/amine" class="bg-amine-input border-amine-text text-amine-text px-8 py-4 rounded-lg inline-flex items-center justify-center font-semibold transition duration-300 hover:bg-opacity-80">
                         Github
