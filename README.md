@@ -108,10 +108,6 @@ Contributions to amine are welcome. Please feel free to submit a Pull Request.
    <img src="https://contrib.rocks/image?repo=datavorous/amine" />
    </a>
 
-## Support
-
-For support, please email [bhattacharjeesagnik910@gmail.com](mailto:bhattacharjeesagnik910@gmail.com).
-
 ## License
 
 [MIT License](LICENSE)
